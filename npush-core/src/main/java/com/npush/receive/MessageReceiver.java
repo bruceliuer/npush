@@ -20,6 +20,7 @@ public class MessageReceiver {
             case Login:
                 break;
             case Bind:
+            case Unbind:
                 BIND_HANDLER.handle(request);
                 break;
             case Kick:
