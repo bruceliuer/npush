@@ -3,6 +3,7 @@ package com.npush.netty.encoder;
 import com.npush.netty.protocol.Packet;
 import com.npush.util.Constants;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
@@ -10,6 +11,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * 自定义
  * magic(2)+length(4)+cmd(1)+version(1)+flags(1)+msgId(4)+body(n)
  */
+@ChannelHandler.Sharable
 public class PacketEncoder extends MessageToByteEncoder<Packet> {
     public static final PacketEncoder INSTANCE = new PacketEncoder();
 
