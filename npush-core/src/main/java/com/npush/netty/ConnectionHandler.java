@@ -6,6 +6,7 @@ import com.npush.connection.NettyConnection;
 import com.npush.netty.protocol.Packet;
 import com.npush.receive.MessageReceiver;
 import com.npush.receive.Request;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -15,10 +16,14 @@ import org.slf4j.LoggerFactory;
 /**
  * 连接处理
  */
+@ChannelHandler.Sharable
 public class ConnectionHandler extends ChannelHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionHandler.class);
-    private MessageReceiver receiver = new MessageReceiver();
+    private MessageReceiver receiver;
 
+    public ConnectionHandler(MessageReceiver receiver) {
+        this.receiver = receiver;
+    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

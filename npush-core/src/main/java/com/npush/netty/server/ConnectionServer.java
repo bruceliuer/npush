@@ -3,6 +3,7 @@ package com.npush.netty.server;
 import com.npush.netty.ConnectionHandler;
 import com.npush.netty.encoder.PacketDecoder;
 import com.npush.netty.encoder.PacketEncoder;
+import com.npush.receive.MessageReceiver;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -47,12 +48,16 @@ public class ConnectionServer {
             b.group(bossGroup, workerGroup);
             b.channel(NioServerSocketChannel.class);
 
+            MessageReceiver receiver = new MessageReceiver();
+
+            final ConnectionHandler connectionHandler = new ConnectionHandler(receiver);
+
             b.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new PacketDecoder());
                     ch.pipeline().addLast(PacketEncoder.INSTANCE);
-                    ch.pipeline().addLast(new ConnectionHandler());
+                    ch.pipeline().addLast(connectionHandler);
                 }
             });
 
